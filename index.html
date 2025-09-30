@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokemon Battle</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Start Screen -->
+    <div class="start-screen" id="start-screen">
+        <div class="title-section">
+            <h1 class="game-title">POKEMON BATTLE</h1>
+            <div class="title-pokemon">
+                <img src="public/images/effects/pika_idle.gif" alt="Pikachu" class="title-sprite">
+                <img src="public/images/effects/bulba_jump.gif" alt="Bulbasaur" class="title-sprite">
+                <img src="public/images/effects/charmander.gif" alt="Charmander" class="title-sprite">
+            </div>
+        </div>
+
+        <div class="start-menu">
+            <button class="start-btn" onclick="playSound('click'); showPokemonSelect()">เริ่มเกม</button>
+            <button class="start-btn" onclick="playSound('click'); showInstructions()">วิธีเล่น</button>
+            <button class="sound-btn" onclick="toggleSound()" id="soundToggle">🔊 เสียง: เปิด</button>
+        </div>
+    </div>
+
+    <!-- Pokemon Selection Screen -->
+    <div class="pokemon-select-screen" id="pokemon-select-screen" style="display: none;">
+        <div class="select-title">
+            <h2>เลือก Pokemon ของคุณ</h2>
+        </div>
+
+        <div class="pokemon-options">
+            <div class="pokemon-card" onclick="playSound('click'); selectPokemon('bulbasaur')">
+                <img src="public/images/effects/bulba_jump.gif" alt="Bulbasaur">
+                <h3>Bulbasaur</h3>
+                <p>ประเภท: หญ้า/พิษ</p>
+                <p>HP: 45 | ATK: 49 | DEF: 49</p>
+            </div>
+
+            <div class="pokemon-card" onclick="playSound('click'); selectPokemon('charmander')">
+                <img src="public/images/effects/charmander.gif" alt="Charmander">
+                <h3>Charmander</h3>
+                <p>ประเภท: ไฟ</p>
+                <p>HP: 39 | ATK: 52 | DEF: 43</p>
+            </div>
+
+            <div class="pokemon-card" onclick="playSound('click'); selectPokemon('squirtle')">
+                <img src="public/images/effects/blastoise.gif" alt="Squirtle">
+                <h3>Squirtle</h3>
+                <p>ประเภท: น้ำ</p>
+                <p>HP: 44 | ATK: 48 | DEF: 65</p>
+            </div>
+        </div>
+
+        <button class="back-btn" onclick="playSound('click'); goBackToStart()">กลับ</button>
+    </div>
+
+    <!-- Instructions Screen -->
+    <div class="instructions-screen" id="instructions-screen" style="display: none;">
+        <div class="instructions-content">
+            <h2>วิธีเล่น Pokemon Battle</h2>
+            <div class="instructions-text">
+                <h3>🎯 เป้าหมาย</h3>
+                <p>ทำให้ Pokemon ของฝ่ายตรงข้าม HP เหลือ 0</p>
+
+                <h3>⚔️ การต่อสู้</h3>
+                <p>• เลือกท่าโจมตีเพื่อสร้างความเสียหายให้ศัตรู</p>
+                <p>• ใช้ไอเทมเพื่อฟื้นฟู HP</p>
+                <p>• หรือหนีจากการต่อสู้</p>
+
+                <h3>💪 ประเภทท่าโจมตี</h3>
+                <p>• ไฟ มีประสิทธิภาพกับ หญ้า</p>
+                <p>• น้ำ มีประสิทธิภาพกับ ไฟ</p>
+                <p>• หญ้า มีประสิทธิภาพกับ น้ำ</p>
+                <p>• ไฟฟ้า มีประสิทธิภาพกับ น้ำ</p>
+            </div>
+        </div>
+        <button class="back-btn" onclick="playSound('click'); goBackToStart()">กลับ</button>
+    </div>
+
+    <div class="game-container" id="game-container" style="display: none;">
+        <div class="battle-screen">
+            <div class="enemy-section">
+                <div class="pokemon-info enemy-info">
+                    <h3 id="enemy-name">Pikachu</h3>
+                    <div class="health-bar">
+                        <div class="health-fill" id="enemy-health"></div>
+                    </div>
+                    <div class="health-text">
+                        <span id="enemy-hp">25/25</span> HP
+                    </div>
+                </div>
+                <div class="pokemon-sprite">
+                    <img id="enemy-sprite" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="Enemy Pokemon">
+                </div>
+            </div>
+
+            <div class="player-section">
+                <div class="pokemon-sprite">
+                    <img id="player-sprite" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png" alt="Player Pokemon">
+                </div>
+                <div class="pokemon-info player-info">
+                    <h3 id="player-name">Bulbasaur</h3>
+                    <div class="health-bar">
+                        <div class="health-fill" id="player-health"></div>
+                    </div>
+                    <div class="health-text">
+                        <span id="player-hp">45/45</span> HP
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="battle-menu">
+            <div class="menu-content">
+                <div class="action-buttons" id="main-menu">
+                    <button class="menu-btn" onclick="showAttackMenu()">โจมตี</button>
+                    <button class="menu-btn" onclick="switchPokemon()">เปลี่ยน Pokemon</button>
+                    <button class="menu-btn" onclick="useItem()">ใช้ไอเทม</button>
+                    <button class="menu-btn" onclick="runAway()">หนี</button>
+                </div>
+
+                <div class="attack-menu" id="attack-menu" style="display: none;">
+                    <button class="attack-btn" onclick="useAttack('tackle')">Tackle</button>
+                    <button class="attack-btn" onclick="useAttack('vine-whip')">Vine Whip</button>
+                    <button class="attack-btn" onclick="useAttack('razor-leaf')">Razor Leaf</button>
+                    <button class="attack-btn" onclick="goBack()">กลับ</button>
+                </div>
+            </div>
+
+            <div class="message-box">
+                <p id="battle-message">เลือกการกระทำของคุณ!</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
